@@ -17,5 +17,3 @@ def create_db(db_name: str):
     )
 
     cur = conn.cursor()
-
-
