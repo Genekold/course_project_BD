@@ -50,8 +50,16 @@ class HHCompany(GetCompanyApi):
         :return: список словарей всех вакансий работодателя
         """
         self.employer_id = employer_id
-        params = {"area": 113, "employer_id": employer_id}
-        response = requests.get(f"{self.__url}/{self.vac}", params=params)
-        response.raise_for_status()
-        data_vacancies = response.json()["items"]
+        data_vacancies = []
+        params = {"area": 113, "employer_id": employer_id, 'page': 0, 'per_page': 100}
+
+        while True:
+            response = requests.get(f"{self.__url}/{self.vac}", params=params)
+            response.raise_for_status()
+            vacancies_page = response.json()
+            if not vacancies_page.get('items') or params['page'] == 19:
+                break
+            else:
+                data_vacancies.extend(vacancies_page['items'])
+            params['page'] += 1
         return data_vacancies
