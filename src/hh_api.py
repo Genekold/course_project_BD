@@ -63,3 +63,20 @@ class HHCompany(GetCompanyApi):
                 data_vacancies.extend(vacancies_page['items'])
             params['page'] += 1
         return data_vacancies
+
+if __name__ == '__main__':
+    vac = HHCompany()
+
+    list_ = vac.open_vacancies(1754)
+    for i in list_:
+        if i['salary']:
+            if i['salary']['to'] is None:
+                i['salary']['to'] = 0
+            elif i['salary']['from'] is None:
+                i['salary']['from'] =0
+        # else:
+        #     i['salary']['to'] =  0
+        #     i['salary']['from'] = 0
+
+        print(i['salary'])
+
