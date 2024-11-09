@@ -51,32 +51,15 @@ class HHCompany(GetCompanyApi):
         """
         self.employer_id = employer_id
         data_vacancies = []
-        params = {"area": 113, "employer_id": employer_id, 'page': 0, 'per_page': 100}
+        params = {"area": 113, "employer_id": employer_id, "page": 0, "per_page": 100}
 
         while True:
             response = requests.get(f"{self.__url}/{self.vac}", params=params)
             response.raise_for_status()
             vacancies_page = response.json()
-            if not vacancies_page.get('items') or params['page'] == 19:
+            if not vacancies_page.get("items") or params["page"] == 19:
                 break
             else:
-                data_vacancies.extend(vacancies_page['items'])
-            params['page'] += 1
+                data_vacancies.extend(vacancies_page["items"])
+            params["page"] += 1
         return data_vacancies
-
-if __name__ == '__main__':
-    vac = HHCompany()
-
-    list_ = vac.open_vacancies(1754)
-    for i in list_:
-        if i['salary']:
-            if i['salary']['to'] is None:
-                i['salary']['to'] = 0
-            elif i['salary']['from'] is None:
-                i['salary']['from'] =0
-        # else:
-        #     i['salary']['to'] =  0
-        #     i['salary']['from'] = 0
-
-        print(i['salary'])
-
